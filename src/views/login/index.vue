@@ -1,25 +1,45 @@
 <template>
   <div class="login-container">
-    <el-form class="login-form">
+    <el-form
+      class="login-form"
+      :model="loginForm"
+      :rules="loginRules"
+      ref="loginFormRef"
+    >
       <div class="title-container">
         <h3 class="title">用户登录</h3>
       </div>
-      <el-form-item>
+      <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon="user" />
         </span>
-        <el-input placeholder="username" name="username" type="text"></el-input>
+        <el-input
+          v-model="loginForm.username"
+          placeholder="username"
+          name="username"
+          type="text"
+        ></el-input>
       </el-form-item>
-      <el-form-item>
+      <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon="password" />
         </span>
-        <el-input placeholder="password" name="password" type="text"></el-input>
-        <span class="show-pwd">
-          <svg-icon icon="eye" />
+        <el-input
+          v-model="loginForm.password"
+          placeholder="password"
+          name="password"
+          :type="pwdType"
+        ></el-input>
+        <span class="show-pwd" @click="onPwdTypeChange">
+          <svg-icon :icon="pwdType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
-      <el-button type="primary" style="width: 100%; margin-bottom: 30px">
+      <el-button
+        type="primary"
+        style="width: 100%; margin-bottom: 30px"
+        :loading="loading"
+        @click="handleLogin"
+      >
         登录
       </el-button>
     </el-form>
@@ -27,7 +47,57 @@
 </template>
 
 <script setup>
-import {} from "vue";
+import { ref } from "vue";
+import { validatePassword } from "./rules";
+import { useStore } from "vuex";
+
+const loginForm = ref({
+  username: "super-admin",
+  password: "123456",
+});
+const loginRules = ref({
+  username: [
+    {
+      required: true,
+      trigger: "blur",
+      message: "用户名为必填项目",
+    },
+  ],
+  password: [
+    {
+      required: true,
+      trigger: "blur",
+      validator: validatePassword(),
+    },
+  ],
+});
+const pwdType = ref("password");
+
+const onPwdTypeChange = () => {
+  pwdType.value = pwdType.value === "password" ? "text" : "password";
+};
+
+const loading = ref(false);
+const loginFormRef = ref(null);
+const store = useStore();
+
+const handleLogin = () => {
+  loginFormRef.value.validate((valid) => {
+    if (!valid) return;
+
+    loading.value = true;
+
+    store
+      .dispatch("user/login", loginForm.value)
+      .then(() => {
+        loading.value = false;
+      })
+      .catch((error) => {
+        console.log(error);
+        loading.value = false;
+      });
+  });
+};
 </script>
 
 

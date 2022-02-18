@@ -1,0 +1,19 @@
+<template>
+  <div class="app-main">
+    <router-view></router-view>
+  </div>
+</template>
+
+<script setup>
+</script>
+
+<style lang="scss" scoped>
+.app-main {
+  min-height: calc(100vh - 50px - 43px);
+  width: 100%;
+  position: relative;
+  top: 60px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+</style>

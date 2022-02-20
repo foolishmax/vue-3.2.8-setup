@@ -7,11 +7,11 @@
       class="left-container"
       :style="{ backgroundColor: $store.getters.cssVar.menuBg }"
     >
-      <side-bar></side-bar>
+      <side-bar id="guide-sidebar"></side-bar>
     </div>
     <div class="main-container">
       <v-header class="header"></v-header>
-      <tag-view></tag-view>
+      <tag-view id="guide-tags"></tag-view>
       <v-main class="main"></v-main>
     </div>
   </div>

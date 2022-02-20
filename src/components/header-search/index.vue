@@ -2,6 +2,7 @@
   <div :class="{ show: isShow }" class="header-search">
     <svg-icon
       icon="search"
+      id="guide-search"
       class="search-icon"
       @click.stop="onShowChange"
     ></svg-icon>
@@ -70,7 +71,6 @@ const onSelectChange = (value) => {
 let searchPool = computed(() => {
   const filterRoutes = filterRouters(router.getRoutes());
 
-  console.log(generateRoutes(filterRoutes));
   return generateRoutes(filterRoutes);
 });
 

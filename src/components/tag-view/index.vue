@@ -11,26 +11,65 @@
           backgroundColor: isActive(tag) ? $store.getters.cssVar.menuBg : '',
           borderColor: isActive(tag) ? $store.getters.cssVar.menuBg : '',
         }"
+        @contextmenu.prevent="openMenu($event, index)"
       >
         {{ tag.title }}
         <i
           v-show="!isActive(tag)"
           class="el-icon-close"
-          @click="onCloseClick(index)"
+          @click.prevent.stop="onCloseClick(index)"
         ></i>
       </router-link>
     </el-scrollbar>
+    <context-menu
+      v-show="visible"
+      :style="menuStyle"
+      :index="selectIndex"
+    ></context-menu>
   </div>
 </template>
 
 <script setup>
+import { reactive, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { useStore } from "vuex";
+import ContextMenu from "./ContextMenu.vue";
 
+const store = useStore();
 const route = useRoute();
+const selectIndex = ref(0);
+const visible = ref(false);
+const menuStyle = reactive({
+  left: 0,
+  top: 0,
+});
 
 const isActive = (tag) => tag.path === route.path;
 
-const onCloseClick = (index) => {};
+const onCloseClick = (index) => {
+  store.commit("app/removeTag", {
+    type: "index",
+    index,
+  });
+};
+
+const openMenu = (event, index) => {
+  const { x, y } = event;
+  menuStyle.left = x + "px";
+  menuStyle.top = y + "px";
+  selectIndex.value = index;
+  visible.value = true;
+};
+
+const closeMenu = () => (visible.value = false);
+
+watch(visible, (value) => {
+  if (value) {
+    document.body.addEventListener("click", closeMenu);
+  } else {
+    document.body.removeEventListener("click", closeMenu);
+  }
+});
 </script>
 
 <style lang="scss" scoped>

@@ -2,9 +2,10 @@
   <div class="nav-header">
     <div class="left-menu">
       <hamburger></hamburger>
-      <breadcrumb></breadcrumb>
+      <breadcrumb id="guide-breadcrumb"></breadcrumb>
     </div>
     <div class="right-menu">
+      <guide class="right-menu-item"></guide>
       <header-search class="right-menu-item"></header-search>
       <screen-full class="right-menu-item"></screen-full>
       <theme-picker class="right-menu-item"></theme-picker>
@@ -49,6 +50,7 @@ import {
   ThemePicker,
   ScreenFull,
   HeaderSearch,
+  Guide,
 } from "@/components";
 
 const store = useStore();

@@ -5,3 +5,4 @@ export { default as LangSelect } from "./lang-select";
 export { default as ScreenFull } from "./screen-full";
 export { default as HeaderSearch } from "./header-search";
 export { default as TagView } from "./tag-view";
+export { default as Guide } from "./guide";

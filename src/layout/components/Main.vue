@@ -1,6 +1,12 @@
 <template>
   <div class="app-main">
-    <router-view></router-view>
+    <router-view v-slot="{ Component, route }">
+      <transition name="fade-transform" mode="out-in">
+        <keep-alive>
+          <component :is="Component" :key="route.path"></component>
+        </keep-alive>
+      </transition>
+    </router-view>
   </div>
 </template>
 
@@ -29,7 +35,6 @@ const getTitle = (route) => {
 watch(
   route,
   (to, from) => {
-    console.log(123);
     if (!isTags(to.path)) return;
     const { fullPath, meta, name, params, path, query } = to;
 
@@ -63,11 +68,31 @@ watchSwitchLang(() => {
 
 <style lang="scss" scoped>
 .app-main {
-  min-height: calc(100vh - 50px - 43px);
   width: 100%;
-  position: relative;
+  height: calc(100vh - 50px - 35px);
+  padding: 20px;
+  position: absolute;
   top: 85px;
   overflow: hidden;
   box-sizing: border-box;
+
+  & > div {
+    width: 100%;
+  }
+}
+
+.fade-transform-leave-active,
+.fade-transform-enter-active {
+  transition: all 0.5s;
+}
+
+.fade-transform-enter-from {
+  opacity: 0;
+  transform: translateX(-30px);
+}
+
+.fade-transform-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
 }
 </style>

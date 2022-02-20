@@ -1,14 +1,19 @@
 <template>
-  <div class="logo-container">
-    <el-avatar
-      shape="circle"
-      src="https://raw.githubusercontent.com/foolishmax/foolishmax.github.io/master/images/assets_img/lbs.jpeg"
-      :size="logoHeight"
+  <div>
+    <div
+      class="logo-container"
+      :style="{ backgroundColor: $store.getters.cssVar.menuBg }"
     >
-    </el-avatar>
-    <h1 class="logo-title" v-if="$store.getters.sidebarOpened">foolishmax</h1>
+      <el-avatar
+        shape="circle"
+        src="https://raw.githubusercontent.com/foolishmax/foolishmax.github.io/master/images/assets_img/lbs.jpeg"
+        :size="logoHeight"
+      >
+      </el-avatar>
+      <h1 class="logo-title" v-if="$store.getters.sidebarOpened">foolishmax</h1>
+    </div>
+    <left-menu></left-menu>
   </div>
-  <left-menu></left-menu>
 </template>
 
 <script setup>

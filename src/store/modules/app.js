@@ -36,5 +36,20 @@ export default {
 
       setItem(TAGS_VIEW, state.tags);
     },
+
+    removeTag(state, payload) {
+      const { type, index } = payload;
+
+      if (type === "index") {
+        state.tags.splice(index, 1);
+      } else if (type === "right") {
+        state.tags.splice(index + 1, state.tags.length - index + 1);
+      } else if (type === "other") {
+        state.tags = state.tags.splice(index, 1);
+      }
+
+      console.log(state.tags);
+      setItem(TAGS_VIEW, state.tags);
+    },
   },
 };

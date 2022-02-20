@@ -100,6 +100,7 @@ const publicRoutes = [
   },
   {
     path: "/",
+    redirect: "/profile",
     component: () => import("@/layout/index.vue"),
     children: [
       {

@@ -3,11 +3,15 @@
     class="app-layout"
     :class="[$store.getters.sidebarOpened || 'hideSidebar']"
   >
-    <div class="left-container" :style="{ backgroundColor: variables.menuBg }">
+    <div
+      class="left-container"
+      :style="{ backgroundColor: $store.getters.cssVar.menuBg }"
+    >
       <side-bar></side-bar>
     </div>
     <div class="main-container">
       <v-header class="header"></v-header>
+      <tag-view></tag-view>
       <v-main class="main"></v-main>
     </div>
   </div>
@@ -17,7 +21,7 @@
 import SideBar from "./components/side-bar/index.vue";
 import VHeader from "./components/Header.vue";
 import VMain from "./components/Main.vue";
-import variables from "@/styles/variables.scss";
+import { TagView } from "@/components";
 </script>
 
 <style lang="scss" scoped>
@@ -29,6 +33,7 @@ import variables from "@/styles/variables.scss";
   @include clearfix;
   height: 100%;
   width: 100%;
+  overflow: hidden;
 }
 
 .main-container {

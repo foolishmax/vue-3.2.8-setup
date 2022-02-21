@@ -2,7 +2,7 @@
   <div class="user-manage-container">
     <el-card>
       <div>
-        <el-button type="primary">
+        <el-button type="primary" @click="onImportExcelClick">
           {{ $t("msg.excel.importExcel") }}
         </el-button>
         <el-button type="success">
@@ -44,7 +44,7 @@
         </el-table-column>
         <el-table-column :label="$t('msg.excel.openTime')">
           <template #default="{ row }">
-            <div>{{ row.openTime }}</div>
+            {{ $filters.dateFilter(row.openTime) }}
           </template>
         </el-table-column>
         <el-table-column
@@ -83,7 +83,9 @@
 import { ref } from "vue";
 import { getUserManageList } from "@/api/user-manage";
 import { watchSwitchLang } from "@/utils/i18n";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const tableData = ref([]);
 const total = ref(0);
 const page = ref(1);
@@ -104,6 +106,10 @@ getListData();
 const onSizeChange = () => {};
 
 const onCurrentChange = () => {};
+
+const onImportExcelClick = () => {
+  router.push("/user/import");
+};
 
 watchSwitchLang(getListData);
 </script>

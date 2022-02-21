@@ -7,3 +7,4 @@ export { default as HeaderSearch } from "./header-search";
 export { default as TagView } from "./tag-view";
 export { default as Guide } from "./guide";
 export { default as PanThumb } from "./pan-thumb";
+export { default as UploadExcel } from "./upload-excel";

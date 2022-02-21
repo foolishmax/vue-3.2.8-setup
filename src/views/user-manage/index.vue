@@ -5,7 +5,7 @@
         <el-button type="primary" @click="onImportExcelClick">
           {{ $t("msg.excel.importExcel") }}
         </el-button>
-        <el-button type="success">
+        <el-button type="success" @click="onExportToExcelVisibleChange">
           {{ $t("msg.excel.exportExcel") }}
         </el-button>
       </div>
@@ -53,13 +53,17 @@
           width="260"
         >
           <template #default="{ row }">
-            <el-button type="primay" size="small" @click="onShowClick(row._id)">
+            <el-button
+              type="primary"
+              size="small"
+              @click="onShowClick(row._id)"
+            >
               {{ $t("msg.excel.show") }}
             </el-button>
             <el-button type="info" size="small">
               {{ $t("msg.excel.showRole") }}
             </el-button>
-            <el-button type="danger" size="small">
+            <el-button type="danger" size="small" @click="onRemoveClick(row)">
               {{ $t("msg.excel.remove") }}
             </el-button>
           </template>
@@ -76,20 +80,27 @@
         :total="total"
       ></el-pagination>
     </el-card>
+
+    <export-to-excel v-model="exportToExcelVisible"></export-to-excel>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { getUserManageList } from "@/api/user-manage";
+import { ref, onActivated } from "vue";
+import { getUserManageList, deleteUser } from "@/api/user-manage";
 import { watchSwitchLang } from "@/utils/i18n";
 import { useRouter } from "vue-router";
+import { ElMessageBox, ElMessage } from "element-plus";
+import { useI18n } from "vue-i18n";
+import ExportToExcel from "./components/ExportToExcel.vue";
 
 const router = useRouter();
+const i18n = useI18n();
 const tableData = ref([]);
 const total = ref(0);
 const page = ref(1);
 const size = ref(2);
+const exportToExcelVisible = ref(false);
 
 const getListData = async () => {
   const result = await getUserManageList({
@@ -103,15 +114,44 @@ const getListData = async () => {
 
 getListData();
 
-const onSizeChange = () => {};
+const onSizeChange = (currentSize) => {
+  size.value = currentSize;
+  getListData();
+};
 
-const onCurrentChange = () => {};
+const onCurrentChange = (currentPage) => {
+  page.value = currentPage;
+  getListData();
+};
 
 const onImportExcelClick = () => {
   router.push("/user/import");
 };
 
+const onRemoveClick = (row) => {
+  ElMessageBox.confirm(
+    i18n.t("msg.excel.dialogTitle1") +
+      row.username +
+      i18n.t("msg.excel.dialogTitle2"),
+    {
+      type: "warning",
+    }
+  ).then(async () => {
+    await deleteUser(row._id);
+
+    ElMessage.success(i18n.t(i18n.t("msg.excel.removeSuccess")));
+
+    getListData();
+  });
+};
+
+const onExportToExcelVisibleChange = () => {
+  console.log(123);
+  exportToExcelVisible.value = true;
+};
+
 watchSwitchLang(getListData);
+onActivated(getListData);
 </script>
 
 <style lang="scss" scoped>

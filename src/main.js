@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import installElementPlus from "./plugins/element";
 import installIcons from "@/icons";
+import installDirective from "@/directives";
 import i18n from "./i18n";
 
 // 初始化样式表
@@ -17,4 +18,5 @@ const app = createApp(App);
 installElementPlus(app);
 installIcons(app);
 installFilter(app);
+installDirective(app);
 app.use(store).use(i18n).use(router).mount("#app");

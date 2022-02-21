@@ -26,3 +26,9 @@ export const getUserManageAllList = () => {
     url: "/user-manage/all-list",
   });
 };
+
+export const userDetail = (id) => {
+  return request({
+    url: `/user-manage/detail/${id}`,
+  });
+};

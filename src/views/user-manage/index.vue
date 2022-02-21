@@ -128,6 +128,10 @@ const onImportExcelClick = () => {
   router.push("/user/import");
 };
 
+const onShowClick = (id) => {
+  router.push(`/user/info/${id}`);
+};
+
 const onRemoveClick = (row) => {
   ElMessageBox.confirm(
     i18n.t("msg.excel.dialogTitle1") +
@@ -146,7 +150,6 @@ const onRemoveClick = (row) => {
 };
 
 const onExportToExcelVisibleChange = () => {
-  console.log(123);
   exportToExcelVisible.value = true;
 };
 

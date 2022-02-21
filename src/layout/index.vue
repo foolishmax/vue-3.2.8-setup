@@ -62,5 +62,6 @@ import { TagView } from "@/components";
 
 .main {
   flex: 1;
+  overflow: auto;
 }
 </style>

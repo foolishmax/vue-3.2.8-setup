@@ -1,7 +1,6 @@
 import store from "@/store";
 
 export default (el, binding) => {
-  console.log(el, binding, store);
   const { value } = binding;
   const points = store.getters.userInfo.permission.points;
 

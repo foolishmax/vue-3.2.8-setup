@@ -51,7 +51,7 @@ export const publicRoutes = [
  * 初始化路由表
  */
 export function resetRouter() {
-  const menus = store.getters.userInfo.permission.menus;
+  const menus = store.getters.userInfo?.permission?.menus;
 
   if (menus) {
     menus.forEach((menu) => {

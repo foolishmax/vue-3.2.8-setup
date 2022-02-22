@@ -2,7 +2,11 @@
   <div class="user-manage-container">
     <el-card>
       <div>
-        <el-button type="primary" @click="onImportExcelClick">
+        <el-button
+          type="primary"
+          @click="onImportExcelClick"
+          v-permission="['importUser']"
+        >
           {{ $t("msg.excel.importExcel") }}
         </el-button>
         <el-button type="success" @click="onExportToExcelVisibleChange">
@@ -60,10 +64,20 @@
             >
               {{ $t("msg.excel.show") }}
             </el-button>
-            <el-button type="info" size="small">
+            <el-button
+              type="info"
+              size="small"
+              v-permission="['distributeRole']"
+              @click="onShowRoleClick(row)"
+            >
               {{ $t("msg.excel.showRole") }}
             </el-button>
-            <el-button type="danger" size="small" @click="onRemoveClick(row)">
+            <el-button
+              type="danger"
+              v-permission="['removeUser']"
+              size="small"
+              @click="onRemoveClick(row)"
+            >
               {{ $t("msg.excel.remove") }}
             </el-button>
           </template>
@@ -82,17 +96,24 @@
     </el-card>
 
     <export-to-excel v-model="exportToExcelVisible"></export-to-excel>
+
+    <role-dialog
+      v-model="roleDialogVisible"
+      :userId="selectUserId"
+      @updateRole="getListData"
+    ></role-dialog>
   </div>
 </template>
 
 <script setup>
-import { ref, onActivated } from "vue";
+import { ref, onActivated, watch } from "vue";
 import { getUserManageList, deleteUser } from "@/api/user-manage";
 import { watchSwitchLang } from "@/utils/i18n";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
 import ExportToExcel from "./components/ExportToExcel.vue";
+import RoleDialog from "./components/Role.vue";
 
 const router = useRouter();
 const i18n = useI18n();
@@ -101,6 +122,8 @@ const total = ref(0);
 const page = ref(1);
 const size = ref(2);
 const exportToExcelVisible = ref(false);
+const roleDialogVisible = ref(false);
+const selectUserId = ref("");
 
 const getListData = async () => {
   const result = await getUserManageList({
@@ -132,6 +155,11 @@ const onShowClick = (id) => {
   router.push(`/user/info/${id}`);
 };
 
+const onShowRoleClick = (row) => {
+  selectUserId.value = row._id;
+  roleDialogVisible.value = true;
+};
+
 const onRemoveClick = (row) => {
   ElMessageBox.confirm(
     i18n.t("msg.excel.dialogTitle1") +
@@ -152,6 +180,10 @@ const onRemoveClick = (row) => {
 const onExportToExcelVisibleChange = () => {
   exportToExcelVisible.value = true;
 };
+
+watch(roleDialogVisible, (value) => {
+  if (!value) selectUserId.value = "";
+});
 
 watchSwitchLang(getListData);
 onActivated(getListData);

@@ -9,7 +9,18 @@ router.beforeEach(async (to, from) => {
       return "/";
     } else {
       if (!store.getters.hasUserInfo) {
-        await store.dispatch("user/getUserInfo");
+        const { permission } = await store.dispatch("user/getUserInfo");
+
+        const filterRoutes = await store.dispatch(
+          "permission/filterRoutes",
+          permission.menus
+        );
+
+        filterRoutes.forEach((item) => {
+          router.addRoute(item);
+        });
+
+        return to.path;
       }
     }
   } else {

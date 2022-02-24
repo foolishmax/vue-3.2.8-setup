@@ -48,13 +48,14 @@
 </template>
 
 <script setup>
-import { ref, onActivated } from "vue";
+import { ref, onActivated, onMounted } from "vue";
 import { columns, selectedKeys, tableColumns } from "./dynamic";
 import { getArticleList, deleteArticle } from "@/api/article";
 import { watchSwitchLang } from "@/utils/i18n";
 import { useRouter } from "vue-router";
 import { ElMessageBox, ElMessage } from "element-plus";
 import { useI18n } from "vue-i18n";
+import { tableRef, initSortable } from "./sortable";
 
 const router = useRouter();
 const i18n = useI18n();
@@ -62,6 +63,10 @@ const tableData = ref([]);
 const total = ref(0);
 const page = ref(1);
 const size = ref(10);
+
+onMounted(() => {
+  initSortable(tableData, getListData);
+});
 
 const getListData = async () => {
   const result = await getArticleList({
@@ -124,5 +129,11 @@ onActivated(getListData);
     margin-top: 20px;
     text-align: center;
   }
+}
+
+:deep(.sortable-ghost) {
+  opacity: 0.6;
+  color: #fff !important;
+  background: #304156 !important;
 }
 </style>

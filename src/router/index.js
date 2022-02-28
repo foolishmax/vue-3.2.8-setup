@@ -1,4 +1,8 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHashHistory,
+  createWebHistory,
+} from "vue-router";
 import UserManageRouter from "./modules/UserManage";
 import RoleListRouter from "./modules/RoleList";
 import PermissionListRouter from "./modules/PermissionList";
@@ -61,7 +65,10 @@ export function resetRouter() {
 }
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history:
+    process.env.NODE_ENV === "production"
+      ? createWebHistory()
+      : createWebHashHistory(),
   routes: publicRoutes,
 });
 
